@@ -120,25 +120,25 @@ func (app *App) HandleSession(w http.ResponseWriter, r *http.Request) {
 						value, ok := msg["value"]
 						if !ok {
 							cancel = func() {
-								app.quit <- errors.New("failed to extract sessionId from response")
+								app.quit <- errors.New("failed to extract sessionId value from response")
 							}
-							logger.Errorf("unable to extract sessionId from response")
+							logger.Errorf("unable to extract sessionId value from response")
 							return errors.New("selenium protocol")
 						}
 						valueMap, ok := value.(map[string]interface{})
 						if !ok {
 							cancel = func() {
-								app.quit <- errors.New("failed to extract sessionId from response")
+								app.quit <- errors.New("failed to convert value for sessionId from response")
 							}
-							logger.Errorf("unable to extract sessionId from response")
+							logger.Errorf("failed to convert value for sessionId from response")
 							return errors.New("selenium protocol")
 						}
 						sessionId, ok = valueMap["sessionId"].(string)
 						if !ok {
 							cancel = func() {
-								app.quit <- errors.New("failed to extract sessionId from response")
+								app.quit <- errors.New("failed to extract sessionId from value")
 							}
-							logger.Errorf("unable to extract sessionId from response")
+							logger.Errorf("unable to extract sessionId from value")
 							return errors.New("selenium protocol")
 						}
 						msg["value"].(map[string]interface{})["sessionId"] = app.hostname
